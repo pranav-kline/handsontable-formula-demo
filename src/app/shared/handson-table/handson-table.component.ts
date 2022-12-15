@@ -510,22 +510,7 @@ export class HandsonTableComponent implements OnInit {
 
         return cellProperties;
       },
-      afterOnCellMouseDown(
-        event: any,
-        coords: { col: number; row: any },
-        TD: any
-      ) {
-        const totalCols = that.hotRegisterer.getInstance(that.id).countCols();
-        if (!that.isStudyEditable && coords.col === totalCols - 1) {
-          const logicalRow = that.hotRegisterer
-            .getInstance(that.id)
-            .toPhysicalRow(coords.row);
 
-          const currentRow = that.hotRegisterer
-            .getInstance(that.id)
-            .getSourceDataAtRow(logicalRow) as any;
-        }
-      },
       afterSelection: (
         row,
         column,
@@ -595,8 +580,8 @@ export class HandsonTableComponent implements OnInit {
     value: any,
     cellProperties: any
   ) {
-    Handsontable.renderers.NumericRenderer.apply(this, arguments as any);
-
+    // Handsontable.renderers.NumericRenderer.apply(this, arguments as any);
+    td.innerHTML = value;
     const visiblerows = instance.rowIndexMapper.getNotTrimmedIndexes();
     const logicalRowNum = cellProperties.row;
     const cellProps = prop.toString().split('.');
@@ -617,7 +602,7 @@ export class HandsonTableComponent implements OnInit {
         cellProperties.col
       );
       if (cellValue.toString().startsWith('=', 0)) {
-        td.classList.add('has-formula');
+        // td.classList.add('has-formula');
         if (cellProperties.showFormula) {
           td.innerHTML = cellValue;
         }
@@ -702,11 +687,6 @@ export class HandsonTableComponent implements OnInit {
     //  !cellProperties.isStudyEditable &&
     //  col === colCount - hiddenColumnsCount - 1
     //) {
-    if (!cellProperties.isStudyEditable && col === colCount - 1) {
-      td.className = 'text-center';
-      td.innerHTML =
-        '<button class="btn btn-outline-danger btn-sm"><i class="fa fa-trash"></i></button>';
-    }
 
     if (typeof cellProps[0] !== 'undefined' && cellProps[0] === 'YearsData') {
       if (cellProps[2] !== cellProperties.calculatedField) {
@@ -760,10 +740,10 @@ export class HandsonTableComponent implements OnInit {
             cellProperties.numericFormat = {
               pattern: '0,0.0',
             };
-            Handsontable.renderers.NumericRenderer.apply(
-              this,
-              arguments as any
-            );
+            // Handsontable.renderers.NumericRenderer.apply(
+            //   this,
+            //   arguments as any
+            // );
             // add % symbol to calculated fields, numeric sorting is allowed
             td.innerHTML = `${value}%`;
           }
